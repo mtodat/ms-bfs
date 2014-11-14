@@ -1,4 +1,6 @@
-This is the experimental framework to evaluate the MS-BFS agorithm proposed in the VLDB 2015 paper "The More the Merrier: Efficient Multi-Source Graph Traversal" and its related work.
+# About
+
+This is the experimental framework used to evaluate the **MS-BFS** algorithm (proposed in the VLDB 2015 paper "The More the Merrier: Efficient Multi-Source Graph Traversal") and its related work.
 
 The code computes the top-k closeness centrality values for the vertices in a given graph using different BFS algorithms.
 
@@ -9,7 +11,7 @@ Following are the instructions to compile and run the source code.
 
 Tested on Ubuntu 14.04 using GCC 4.8.2.
 
-# Use
+# Usage
 `./runBencher [nRun] [nThreads] [BFSType] [bWidth] (nSources) (force)`
 
 - `nRun`:     Number of execution
@@ -24,3 +26,14 @@ Tested on Ubuntu 14.04 using GCC 4.8.2.
 # Examples
 - `./runBencher test_queries/ldbc10k.txt 3 8 naive 1 20 f`
 - `./runBencher test_queries/ldbc10k.txt 1 32 256 2` (only works when compiled for the architecture core-avx2)
+
+# Team
+
+- [Manuel Then](http://www-db.in.tum.de/~then/) (Technische Universität München)
+- [Moritz Kaufmann](http://www-db.in.tum.de/~kaufmann/) (Technische Universität München)
+- [Fernando Chirigati](http://bigdata.poly.edu/~fchirigati/) (New York University)
+- [Tuan-Anh Hoang-Vu](http://bigdata.poly.edu/~tuananh/) (New York University)
+- [Kien Pham](http://bigdata.poly.edu/~kienpham/) (New York University)
+- [Alfons Kemper](http://www3.in.tum.de/~kemper/) (Technische Universität München)
+- [Thomas Neumann](http://www-db.in.tum.de/~neumann/) (Technische Universität München)
+- [Huy T. Vo](http://serv.cusp.nyu.edu/~hvo/) (New York University)
