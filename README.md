@@ -1,6 +1,6 @@
 # About
 
-This is the experimental framework used to evaluate the **MS-BFS** algorithm (proposed in the VLDB 2015 paper "The More the Merrier: Efficient Multi-Source Graph Traversal") and its related work.
+This is the experimental framework used to evaluate the **MS-BFS** algorithm (proposed in the VLDB 2015 paper [The More the Merrier: Efficient Multi-Source Graph Traversal](http://www.vldb.org/pvldb/vol8/p449-then.pdf)) and its related work.
 
 The code computes the top-k closeness centrality values for the vertices in a given graph using different BFS algorithms.
 
