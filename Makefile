@@ -6,7 +6,8 @@ endif
 BOOSTDIR=./boost
 BOOST_INC=$(BOOSTDIR)
 BOOST_LIB=$(BOOSTDIR)/stage/lib/libboost_
-LDFLAGS=$(BOOST_LIB)iostreams.a $(BOOST_LIB)system.a $(BOOST_LIB)thread.a $(BOOST_LIB)timer.a $(BOOST_LIB)chrono.a
+BOOST_LIBS=$(BOOST_LIB)iostreams.a $(BOOST_LIB)system.a $(BOOST_LIB)thread.a $(BOOST_LIB)timer.a $(BOOST_LIB)chrono.a
+LDFLAGS=$(BOOST_LIBS)
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
 LDFLAGS+=-lrt
@@ -44,7 +45,7 @@ else
 EXEC_EXECUTABLE=$(EXECUTABLE_DEBUG)
 endif
 
-RELEASE_OBJECTS=$(addsuffix .release.o, $(basename $(CORE_SOURCES))) $(LDFLAGS)
+RELEASE_OBJECTS=$(addsuffix .release.o, $(basename $(CORE_SOURCES)))
 
 # Testing related variables
 TEST_DATA_PATH=test_data
@@ -83,22 +84,22 @@ $(EXECUTABLE_BENCH): $(ALL_SOURCES)
 	-rm *.gcda util/*.gcda
 	-rm $(EXECUTABLE_BENCH_PROFILE)
 
-$(EXECUTABLE_BENCH_THREADS): benchThreads.release.o $(RELEASE_OBJECTS)
+$(EXECUTABLE_BENCH_THREADS): benchThreads.release.o $(RELEASE_OBJECTS) $(BOOST_LIBS)
 	@rm -f $(CORE_DEPS)
-	$(CC) benchThreads.release.o $(RELEASE_OBJECTS) -o $@ $(LD_FLAGS) $(LIBS)
+	$(CC) benchThreads.release.o $(RELEASE_OBJECTS) $(LDFLAGS) -o $@ $(LD_FLAGS) $(LIBS)
 
-$(EXECUTABLE_BENCHER): runBencher.release.o $(RELEASE_OBJECTS)
+$(EXECUTABLE_BENCHER): runBencher.release.o $(RELEASE_OBJECTS) $(BOOST_LIBS)
 	@rm -f $(CORE_DEPS)
-	$(CC) runBencher.release.o $(RELEASE_OBJECTS) -o $@ $(LD_FLAGS) $(LIBS)
+	$(CC) runBencher.release.o $(RELEASE_OBJECTS) $(LDFLAGS) -o $@ $(LD_FLAGS) $(LIBS)
 
-$(EXECUTABLE_BENCH_VARIANTS): benchVariants.release.o $(RELEASE_OBJECTS)
+$(EXECUTABLE_BENCH_VARIANTS): benchVariants.release.o $(RELEASE_OBJECTS) $(BOOST_LIBS)
 	@rm -f $(CORE_DEPS)
-	$(CC) benchVariants.release.o $(RELEASE_OBJECTS) -o $@ $(LD_FLAGS) $(LIBS)
+	$(CC) benchVariants.release.o $(RELEASE_OBJECTS) $(LDFLAGS) -o $@ $(LD_FLAGS) $(LIBS)
 
 ifndef DEBUG
-$(EXEC_EXECUTABLE): main.release.o $(RELEASE_OBJECTS)
+$(EXEC_EXECUTABLE): main.release.o $(RELEASE_OBJECTS) $(BOOST_LIBS)
 	@rm -f $(CORE_DEPS)
-	$(CC) main.release.o $(RELEASE_OBJECTS) -o $@ $(LD_FLAGS) $(LIBS)
+	$(CC) main.release.o $(RELEASE_OBJECTS) $(LDFLAGS) -o $@ $(LD_FLAGS) $(LIBS)
 else
 $(EXEC_EXECUTABLE): main.o $(CORE_OBJECTS)
 	@rm -f $(CORE_DEPS)
@@ -106,7 +107,7 @@ $(EXEC_EXECUTABLE): main.o $(CORE_OBJECTS)
 endif
 
 %.release.o: %.cpp
-	$(CC) $(RELEASE_CFLAGS) -c $< -o $@ $(LIBS)
+	$(CC) $(RELEASE_CFLAGS) $(LDFLAGS) -c $< -o $@ $(LIBS)
 
 .cpp.o:
 	$(CC) $(CFLAGS) -DTRACE -c $< -o $@ $(LIBS)

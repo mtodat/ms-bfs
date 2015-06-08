@@ -61,7 +61,7 @@ struct BatchBits {
       data[field] |= BitBaseOp<bit_t>::getSetMask(field_bit);
    }
 };
-
+static const unsigned int PREFETCH=38;
 // General HugeBatchBFS loop
 template<typename bit_t=uint64_t, uint64_t width=1, bool detectSingle=false, uint32_t alpha=14, uint32_t beta=24>
 struct HugeBatchBfs {
@@ -69,7 +69,6 @@ struct HugeBatchBfs {
    static const size_t WIDTH=width;
    static const size_t TYPE_BITS=sizeof(bit_t)*8;
    #ifdef DO_PREFETCH
-   static const unsigned int PREFETCH=38;
    #endif
    static const size_t BATCH_BITS_COUNT = sizeof(bit_t)*width*8;
    typedef BatchBits<bit_t, width> Bitset;
@@ -648,7 +647,7 @@ struct HugeBatchBfs {
          bfsData.totalReachable += numDiscovered;
          bfsData.totalDistances += numDiscovered*distance;
 
-         if((bfsData.componentSize-1)==bfsData.totalReachable) {
+         if((bfsData.componentSize-1)==bfsData.totalReachable|| numDiscovered==0) {
             processQuery.data[field] = BitBaseOp<bit_t>::andNot(processQuery.data[field], BitBaseOp<bit_t>::getSetMask(field_bit));
             queriesToProcess--;
          }
